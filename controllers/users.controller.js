@@ -36,68 +36,17 @@ module.exports.create = (req, res, next) => {
 }
 
 module.exports.validate = (req, res, next) => {
-  User.findOne({ validateToken: req.params.token })
-    .then(user => {
-      if (user) {
-        user.validated = true
-        user.save()
-          .then(() => {
-            res.redirect('/login')
-          })
-          .catch(next)
-      } else {
-        res.redirect('/')
-      }
-    })
-    .catch(next)
+  res.send('TODO!')
 }
 
 module.exports.login = (_, res) => {
-  res.render('users/login')
+  res.send('TODO!')
 }
 
 module.exports.doLogin = (req, res, next) => {
-  const { email, password } = req.body
-
-  if (!email || !password) {
-    return res.render('users/login', { user: req.body })
-  }
-
-  User.findOne({ email: email, validated: true })
-    .then(user => {
-      if (!user) {
-        res.render('users/login', {
-          user: req.body,
-          error: { password: 'invalid password' }
-        })
-      } else {
-        return user.checkPassword(password)
-          .then(match => {
-            if (!match) {
-              res.render('users/login', {
-                user: req.body,
-                error: { password: 'invalid password' }
-              })
-            } else {
-              req.session.user = user;
-              res.redirect('/');
-            }
-          })
-      }
-    })
-    .catch(error => {
-      if (error instanceof mongoose.Error.ValidationError) {
-        res.render('users/login', {
-          user: req.body,
-          error: error.error
-        })
-      } else {
-        next(error);
-      }
-    });
+  res.send('TODO!')
 }
 
 module.exports.logout = (req, res) => {
-  req.session.destroy();
-  res.redirect('/login');
+  res.send('TODO!')
 }
