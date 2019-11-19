@@ -1,0 +1,41 @@
+<form action="/users" method="POST">
+  <div class="form-group">
+    <label for="name">name</label>
+    <input name="name" type="text" class="form-control {{#if error.name }}is-invalid{{/if}}" id="name"
+      placeholder="Enter name" value="{{ user.name }}">
+
+    {{#if error.name}}
+    <div class="invalid-feedback">
+      {{error.name.message}}
+    </div>
+    {{/if}}
+  </div>
+
+  <div class="form-group">
+    <label for="email">email</label>
+    <input name="email" type="email" class="form-control {{#if error.email }}is-invalid{{/if}}" id="email"
+      placeholder="Enter name" value="{{ user.email }}">
+
+    {{#if error.email}}
+    <div class="invalid-feedback">
+      {{error.email.message}}
+    </div>
+    {{/if}}
+  </div>
+
+  <div class="form-group">
+    <label for="password">password</label>
+    <input name="password" type="password" class="form-control {{#if error.password }}is-invalid{{/if}}" id="password"
+      placeholder="password" value="{{ user.password }}">
+
+    {{#if error.password}}
+    <div class="invalid-feedback">
+      {{error.password.message}}
+    </div>
+    {{/if}}
+  </div>
+
+  <button type="submit" class="btn btn-primary">
+    Sign up
+  </button>
+</form>
