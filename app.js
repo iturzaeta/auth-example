@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session);
 
 app.use((req, res, next) => {
-  res.locals.currentUser = 'TODO'
+  res.locals.currentUser = req.session.user
   next()
 })
 

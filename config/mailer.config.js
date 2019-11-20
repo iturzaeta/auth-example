@@ -10,6 +10,16 @@ const transporter = nodemailer.createTransport({
   auth: { user, pass }
 });
 
-module.exports.sendValidateEmail = (targetUser) => {
-  console.log('TODO!')
+module.exports.sendValidateEmail = (toCreateUser) => {
+  transporter.sendMail({
+    from: `"Auth-Example 👻" <${user}>`,
+    to: toCreateUser.email,
+    subject: 'Welcome to auth-example!',
+    html: `
+      <h1>Welcome</h1>
+      <a href='${APP_HOST}/users/${toCreateUser.validateToken}/validate'>Confirm account</a>
+    `
+  })
+    .then(info => console.log(info))
+    .catch(error => console.log(error))
 }

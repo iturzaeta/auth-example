@@ -1,9 +1,15 @@
 module.exports.isAuthenticated = (req, res, next) => {
-  console.log('TODO')
-  next()
+  if (req.session.user) {
+    next()
+  } else {
+    res.redirect('/login');
+  }
 }
 
 module.exports.isNotAuthenticated = (req, res, next) => {
-  console.log('TODO')
-  next()
+  if (req.session.user) {
+    res.redirect('/login');
+  } else {
+    next()
+  }
 }

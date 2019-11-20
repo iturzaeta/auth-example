@@ -36,17 +36,72 @@ module.exports.create = (req, res, next) => {
 }
 
 module.exports.validate = (req, res, next) => {
-  res.send('TODO!')
+  User.findOne({ validateToken: req.params.token })
+    .then(user => {
+      if (user) {
+        user.validated = true
+        user.save()
+          .then(() => {
+            res.redirect('/login')
+          })
+          .catch(next)
+      } else {
+        res.redirect('/')
+      }
+    })
+    .catch(next)
 }
 
 module.exports.login = (_, res) => {
-  res.send('TODO!')
+  res.render("users/login")
 }
+
+
 
 module.exports.doLogin = (req, res, next) => {
-  res.send('TODO!')
+  
+  const { email, password } = req.body ////////////////////// preguntar que coño es esto
+
+  if (!email || !password) {
+    return res.render('users/login', { user: req.body })
+  }
+
+  User.findOne({ email: email, validated: true })
+    .then(user => {
+      if (!user) {
+        res.render('users/login', {
+          //user: req.body,
+          error: { password: 'invalid user or password' }
+        })
+      } else {
+        return user.checkPassword(password)
+          .then(match => {
+            if (!match) {
+              res.render('users/login', {
+                //user: req.body,
+                error: { password: 'invalid user or password' }
+              })
+            } else {
+              req.session.user = user;
+              res.redirect('/');
+            }
+          })
+      }
+    })
+    .catch(error => {
+      if (error instanceof mongoose.Error.ValidationError) {
+        res.render('users/login', {
+          user: req.body,
+          error: error.error
+        })
+      } else {
+        next(error);
+      }
+    });
 }
 
+
 module.exports.logout = (req, res) => {
-  res.send('TODO!')
+  req.session.destroy();
+  res.redirect('/login');
 }
